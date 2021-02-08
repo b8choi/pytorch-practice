@@ -30,7 +30,7 @@ class NotMNIST(Dataset):
     }
 
 
-    def __init__(self, size, root, train, transform, download=True):
+    def __init__(self, size='small', root='./', train=True, transform=transforms.ToTensor(), download=True):
         self.root = root
         self.transform = transform
         self.paths = self.config[size]['paths']
@@ -59,11 +59,10 @@ class NotMNIST(Dataset):
         with open(pickle_path, 'rb') as f:
             self.dataset = pickle.load(f)
 
+        num = int(len(self) * 0.85)
         if train:
-            num = int(len(self) * 0.85)
             self.dataset['content'] = self.dataset['content'][:num]
         else:
-            num = int(len(self) * 0.85)
             self.dataset['content'] = self.dataset['content'][num:]
 
 
@@ -131,5 +130,5 @@ class NotMNIST(Dataset):
 
 
 if __name__ == '__main__':
-    data = NotMNIST(size='small', root='./data/', train=True, transform=transforms.ToTensor(), download=True)
+    data = NotMNIST(size='small', root='./data/', train=True)
     print(data[0])
